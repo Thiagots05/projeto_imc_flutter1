@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_imc_flutter1/models/dados_pessoa.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -14,6 +15,9 @@ class _MyHomePageState extends State<MyHomePage> {
   var nomeController = TextEditingController();
   var alturaController = TextEditingController();
   var pesoController = TextEditingController();
+  late Pessoa pessoa;
+  var imc = 0.0;
+  var resultado = '';
   
 
 
@@ -26,9 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
+        body: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,31 +85,40 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                 ),
                   onPressed: (){
-                    debugPrint('IMC');
+                    pessoa = Pessoa(
+                      nomeController.text,
+                      double.tryParse(pesoController.text)!,
+                      double.tryParse(alturaController.text)!);
+                      setState(() {
+                        imc = pessoa.calculaImc();
+                        resultado = pessoa.getClassification(imc);
+                      });
+                    
+                    
                 } ,
                 
                ),
-               const Center(
+                Center(
                  child: Column(
                    
                    children:[
                      Padding(
-                       padding: EdgeInsets.symmetric(vertical: 10.0),
-                       child: Text('Resultado: 29.00', style: TextStyle(
+                       padding: const EdgeInsets.symmetric(vertical: 10.0),
+                       child: Text('Resultado: ${imc.toStringAsFixed(2)}', style: const TextStyle(
                          fontSize: 22,
                          fontWeight: FontWeight.w500,
                          color: Colors.blueAccent, ),),
                      ),
-                     Padding(
-                       padding: EdgeInsets.symmetric(vertical: 10.0),
-                       child: Text('Sobrepeso', style: TextStyle(
+                      Padding(
+                       padding: const EdgeInsets.symmetric(vertical: 10.0),
+                       child: Text(resultado, style: const TextStyle(
                          fontSize: 22,
                          fontWeight: FontWeight.w500,
                          color: Colors.deepOrange, ),),
                      ),
                      ]),
                )
-
+          
               ],
             ),
           ),
