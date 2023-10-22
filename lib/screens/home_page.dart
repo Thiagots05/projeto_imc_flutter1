@@ -29,33 +29,85 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: FloatingActionButton(
                   child: const Icon(Icons.history, color: Colors.blueAccent,),
                   onPressed: (){
-                    print(listaDeResultados);
                     showModalBottomSheet(
-                      context: context,
-                      builder: (context){
-                        return Container(
-                          height: 200,
-                          child: ListView.builder(
-                            itemCount: listaDeResultados.length,
-                            itemBuilder: (context, index){
+                context: context,
+                
+                builder: (context) {
+                  return Center(
+                    child: ListView(
+                    
+                    children :
+                        
+                        [
+                          InkWell(
+                          onTap: ()=>Navigator.pop(context),
+                          child: Center(child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Histórico', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue[800]),),
+                          )),
+                        ),
+                          const SizedBox(height: 30,),
+                          ...listaDeResultados.map((e) {
+                          return Card(
+                            
+                            elevation: 2,
+                            child: ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('${e.nome!} - IMC: ${e.calculaImc().toStringAsFixed(2)}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.blueAccent),),
+                                
+                                Chip(
+                                  side: BorderSide.none,
+                                  backgroundColor: Colors.grey[300],
+                                  label: Text(e.getClassification(e.calculaImc()), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.deepOrange),),)
+                                
+                              ],
+                            ),
+                            subtitle: Text('altura: ${e.altura}   peso: ${e.peso}', style: const TextStyle(color: Colors.grey),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                                                  ),
+                          );
+                        }).toList(),]
+                        ),
+                  );
+                },);
+                  }),
+              
+
+
+
+
+
+
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   builder: (context){
+                    //     return Container(
+                    //       height: 200,
+                    //       child: ListView.builder(
+                    //         itemCount: listaDeResultados.length,
+                    //         itemBuilder: (context, index){
                              
-                              listaDeResultados.isNotEmpty?
-                                listaDeResultados.map((e) {
-                            return 
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                dense: true,
-                                title: Text(e.nome, 
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),) ,
-                                subtitle: Text('IMC: ${e.calculaImc().toStringAsFixed(2)}'),
-                              ),
-                            );
-                          }).toList(): const Text('Não há registros!');
-                            }),
-                        );
-                      });
-                }),
+                    //           listaDeResultados.isNotEmpty?
+                    //             listaDeResultados.map((e) {
+                    //         return 
+                    //         Padding(
+                    //           padding: const EdgeInsets.all(8.0),
+                    //           child: ListTile(
+                    //             dense: true,
+                    //             title: Text(e.nome, 
+                    //             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),) ,
+                    //             subtitle: Text('IMC: ${e.calculaImc().toStringAsFixed(2)}'),
+                    //           ),
+                    //         );
+                    //       }).toList(): const Text('Não há registros!');
+                    //         }),
+                    //     );
+                    //   });
+                // }),
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
